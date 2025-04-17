@@ -1,0 +1,7 @@
+services:
+  backend:
+    build:
+      context: .
+    container_name: creatly_backend
+    ports:
+      - 9667:9667
