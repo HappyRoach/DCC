@@ -29,7 +29,6 @@ def get_user(user_id: int, db: Session = Depends(get_db),
     return db_user
 
 
-# Эндпоинт для получения информации о текущем пользователе
 @router.get("/user/me", response_model=UserGet)
 def get_user_info(db: Session = Depends(get_db),
                   current_user: auth.UserAuth = Depends(security.get_current_user)):

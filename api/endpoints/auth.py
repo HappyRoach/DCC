@@ -27,6 +27,5 @@ def login_for_access_token(form_data: Login, db: Session = Depends(get_db)):
             detail="Incorrect username or password",
         )
 
-    # Генерация токена
     access_token = security.create_access_token(data={'user_id': db_user.id, 'role_id': db_user.role.id})
     return {"access_token": access_token, "token_type": "bearer"}
