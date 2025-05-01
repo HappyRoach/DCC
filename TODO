@@ -1,0 +1,4 @@
+- UPDATE ALEMBIC!!!
+alembic revision --autogenerate -m "Add email to users"
+alembic upgrade head
+

@@ -7,6 +7,7 @@ from .. import security
 from ..schemas import auth
 from ..schemas.user import *
 from ..utils.database import get_db, Session
+from database.schemas.user import User
 
 router = APIRouter()
 
