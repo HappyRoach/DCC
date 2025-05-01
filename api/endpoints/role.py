@@ -7,21 +7,25 @@ from ..schemas.role import *
 from ..schemas import auth
 from .. import security
 from ..utils.database import get_db, Session
+from database.schemas.user import User
 
 router = APIRouter()
 
 @router.post("/", response_model=RoleCreate)
-def create_role(role: RoleCreate, db: Session = Depends(get_db), current_user: auth.UserAuth = Depends(security.get_current_user)):
+def create_role(role: RoleCreate, db: Session = Depends(get_db), 
+                current_user: User = Depends(security.check_role(["admin"]))):
     return crud.create_role(db=db, name=role.name)
 
 
 @router.get("/", response_model=List[RoleGet])
-def get_roles(db: Session = Depends(get_db), current_user: auth.UserAuth = Depends(security.get_current_user)):
+def get_roles(db: Session = Depends(get_db), 
+              current_user: User = Depends(security.check_role(["admin", "manager"]))):
     return crud.get_roles(db)
 
 
 @router.get("/{role_id}", response_model=RoleCreate)
-def get_role(role_id: int, db: Session = Depends(get_db), current_user: auth.UserAuth = Depends(security.get_current_user)):
+def get_role(role_id: int, db: Session = Depends(get_db), 
+             current_user: User = Depends(security.check_role(["admin", "manager"]))):
     db_role = crud.get_role(db, role_id=role_id)
     if db_role is None:
         raise HTTPException(status_code=404, detail="Role not found")
@@ -29,7 +33,8 @@ def get_role(role_id: int, db: Session = Depends(get_db), current_user: auth.Use
 
 
 @router.put("/{role_id}", response_model=RoleCreate)
-def update_role(role_id: int, role: RoleUpdate, db: Session = Depends(get_db), current_user: auth.UserAuth = Depends(security.get_current_user)):
+def update_role(role_id: int, role: RoleUpdate, db: Session = Depends(get_db), 
+                current_user: User = Depends(security.check_role(["admin"]))):
     db_role = crud.update_role(db=db, role_id=role_id, name=role.name)
     if db_role is None:
         raise HTTPException(status_code=404, detail="Role not found")
@@ -37,7 +42,8 @@ def update_role(role_id: int, role: RoleUpdate, db: Session = Depends(get_db), c
 
 
 @router.delete("/{role_id}")
-def delete_role(role_id: int, db: Session = Depends(get_db), current_user: auth.UserAuth = Depends(security.get_current_user)):
+def delete_role(role_id: int, db: Session = Depends(get_db), 
+                current_user: User = Depends(security.check_role(["admin"]))):
     db_role = crud.delete_role(db, role_id=role_id)
     if db_role is None:
         raise HTTPException(status_code=404, detail="Role not found")

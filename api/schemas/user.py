@@ -13,6 +13,14 @@ class UserCreate(BaseModel):
         orm_mode = True
 
 
+class RegularUserCreate(BaseModel):
+    login: str
+    password: str
+
+    class Config:
+        orm_mode = True
+
+
 class Role(BaseModel):
     id: int
     name: str

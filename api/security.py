@@ -1,13 +1,16 @@
 from datetime import datetime, timedelta, UTC
 from base64 import b64decode
+from typing import List
 
 import jwt
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Depends
 from sqlalchemy.orm import Session
 
 import setting
 from database import Session
 from .schemas.auth import UserAuth
+from database.schemas.user import User
+from database.schemas.role import Role
 
 
 SECRET_KEY = b64decode(setting.SECRET_KEY)
@@ -49,3 +52,26 @@ def verify_token(token: str):
 def get_current_user(token: str):
     payload = verify_token(token)
     return UserAuth(**payload)
+
+
+def get_current_user_with_role(token: str, db: Session = Depends(get_db)):
+    payload = verify_token(token)
+    user = db.query(User).filter(User.login == payload.get("sub")).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not found",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    return user
+
+
+def check_role(required_roles: List[str]):
+    async def role_checker(user: User = Depends(get_current_user_with_role)):
+        if user.role.name not in required_roles:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Not enough permissions",
+            )
+        return user
+    return role_checker

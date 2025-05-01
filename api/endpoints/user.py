@@ -12,17 +12,27 @@ router = APIRouter()
 
 @router.post("/", response_model=UserCreate)
 def create_user(user: UserCreate, db: Session = Depends(get_db),
-                current_user: auth.UserAuth = Depends(security.get_current_user)):
+                current_user: User = Depends(security.check_role(["superadmin", "admin"]))):
     return crud.create_user(db=db, login=user.login, password=user.password, role_id=user.role_id)
 
+@router.post("/register", response_model=UserGet)
+def register_regular_user(user: RegularUserCreate, db: Session = Depends(get_db)):
+    # Check if user already exists
+    db_user = crud.get_user_by_login(db, login=user.login)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Username already registered")
+    
+    # Create regular user with default role
+    return crud.create_regular_user(db=db, login=user.login, password=user.password)
 
 @router.get("/", response_model=List[UserGet])
-def get_users(db: Session = Depends(get_db), current_user: auth.UserAuth = Depends(security.get_current_user)):
+def get_users(db: Session = Depends(get_db), 
+              current_user: User = Depends(security.check_role(["superadmin", "admin", "manager"]))):
     return crud.get_users(db)
 
 @router.get("/{user_id}", response_model=UserGet)
 def get_user(user_id: int, db: Session = Depends(get_db),
-             current_user: auth.UserAuth = Depends(security.get_current_user)):
+             current_user: User = Depends(security.check_role(["superadmin", "admin", "manager"]))):
     db_user = crud.get_user(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -31,8 +41,8 @@ def get_user(user_id: int, db: Session = Depends(get_db),
 
 @router.get("/user/me", response_model=UserGet)
 def get_user_info(db: Session = Depends(get_db),
-                  current_user: auth.UserAuth = Depends(security.get_current_user)):
-    db_user = crud.get_user(db, user_id=current_user.user_id)
+                  current_user: User = Depends(security.get_current_user_with_role)):
+    db_user = crud.get_user(db, user_id=current_user.id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
@@ -40,13 +50,13 @@ def get_user_info(db: Session = Depends(get_db),
 
 @router.put("/{user_id}", response_model=UserCreate)
 def update_user(user_id: int, user: UserCreate, db: Session = Depends(get_db),
-                current_user: auth.UserAuth = Depends(security.get_current_user)):
+                current_user: User = Depends(security.check_role(["superadmin", "admin"]))):
     return crud.update_user(db=db, user_id=user_id, login=user.login, role_id=user.role_id)
 
 
 @router.delete("/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db),
-                current_user: auth.UserAuth = Depends(security.get_current_user)):
+                current_user: User = Depends(security.check_role(["superadmin", "admin"]))):
     db_user = crud.delete_user(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
