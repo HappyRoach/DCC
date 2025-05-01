@@ -13,12 +13,13 @@ class User(Base):
     id = Column(Integer, Identity(start=0, increment=1), primary_key=True)
     login = Column(String(100), unique=True, nullable=False)
     password = Column(String)
+    name = Column(String(100), nullable=True)  # Optional real name of the user
     role_id = Column(Integer, ForeignKey('roles.id'), nullable=False)
 
     role = relationship("Role", back_populates="users")
 
     def __repr__(self):
-        return f"<User(login='{self.login}', role='{self.role}', id='{self.id}'')>"
+        return f"<User(login='{self.login}', name='{self.name}', role='{self.role}', id='{self.id}'')>"
 
     def verify_password(self, password: str) -> bool:
         return pwd_context.verify(password, self.password)
