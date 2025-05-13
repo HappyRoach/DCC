@@ -14,15 +14,6 @@ class UserCreate(BaseModel):
         orm_mode = True
 
 
-class RegularUserCreate(BaseModel):
-    login: str
-    name: typing.Optional[str] = None
-    password: str
-
-    class Config:
-        orm_mode = True
-
-
 class Role(BaseModel):
     id: int
     name: str

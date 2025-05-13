@@ -15,7 +15,7 @@ router = APIRouter()
 def create_delivery(
     delivery: schemas.DeliveryCreate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(security.check_role(["superadmin", "admin", "manager", "courier"]))
+    current_user: User = Depends(security.get_current_user_with_role)
 ):
     return crud.create_delivery(db=db, delivery=delivery, user_id=current_user.id)
 
@@ -40,7 +40,7 @@ def get_my_deliveries(
 def get_delivery(
     delivery_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(security.check_role(["superadmin", "admin", "manager", "courier"]))
+    current_user: User = Depends(security.check_role(["superadmin", "admin", "manager"]))
 ):
     db_delivery = crud.get_delivery(db, delivery_id=delivery_id)
     if db_delivery is None:
@@ -55,7 +55,7 @@ def update_delivery(
     delivery_id: int,
     delivery: schemas.DeliveryUpdate,
     db: Session = Depends(get_db),
-    current_user: User = Depends(security.check_role(["superadmin", "admin", "manager", "courier"]))
+    current_user: User = Depends(security.check_role(["superadmin", "admin", "manager"]))
 ):
     db_delivery = crud.get_delivery(db, delivery_id=delivery_id)
     if db_delivery is None:
@@ -74,7 +74,7 @@ def delete_delivery(
     db_delivery = crud.get_delivery(db, delivery_id=delivery_id)
     if db_delivery is None:
         raise HTTPException(status_code=404, detail="Delivery not found")
-    if db_delivery.user_delivery_id != current_user.id and current_user.role.name not in ["superadmin", "admin"]:
+    if db_delivery.user_delivery_id != current_user.id and current_user.role.name not in ["superadmin", "admin", "manager"]:
         raise HTTPException(status_code=403, detail="Not authorized to delete this delivery")
     crud.delete_delivery(db=db, delivery_id=delivery_id)
-    return {"message": "Delivery deleted successfully"} 
+    return {"message": "Delivery deleted successfully"}

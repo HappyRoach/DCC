@@ -18,6 +18,17 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 
+@router.post("/register/regular/", response_model=UserCreate)
+def register_regular_user(user: RegularUserCreate, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_login(db, login=user.login)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Username already registered")
+
+    hashed_password = database.schemas.user.User().set_password(user.password)
+    db_user = crud.create_regular_user(db=db, login=user.login, password=hashed_password)
+    return db_user
+
+
 @router.post("/login/")
 def login_for_access_token(form_data: Login, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_login(db, login=form_data.login)

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+import typing
 
 
 class UserCreate(BaseModel):
@@ -17,6 +18,16 @@ class UserAuth(BaseModel):
     class Config:
         orm_mode = True
 
+
 class Login(BaseModel):
     login: str
     password: str
+
+
+class RegularUserCreate(BaseModel):
+    login: str
+    name: typing.Optional[str] = None
+    password: str
+
+    class Config:
+        orm_mode = True
