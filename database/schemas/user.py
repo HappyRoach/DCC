@@ -1,5 +1,5 @@
 from passlib.context import CryptContext
-from sqlalchemy import Column, Integer, String, ForeignKey, Identity
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 
 from .. import Base

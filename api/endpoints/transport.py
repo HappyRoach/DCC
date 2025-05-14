@@ -62,4 +62,4 @@ def delete_transport(
     db_transport = crud.delete_transport(db, transport_id=transport_id)
     if db_transport is None:
         raise HTTPException(status_code=404, detail="Transport not found")
-    return {"message": "Transport deleted successfully"} 
+    return {"message": "Transport deleted successfully"}

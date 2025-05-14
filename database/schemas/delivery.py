@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Identity
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 import enum
 
@@ -30,4 +30,4 @@ class Delivery(Base):
     transport = relationship("Transport", back_populates="deliveries")
 
     def __repr__(self):
-        return f"<Delivery(id='{self.id}', status='{self.status}', user_id='{self.user_delivery_id}')>" 
+        return f"<Delivery(id='{self.id}', status='{self.status}', user_id='{self.user_delivery_id}')>"

@@ -14,4 +14,4 @@ class Transport(Base):
     deliveries = relationship("Delivery", back_populates="transport")
 
     def __repr__(self):
-        return f"<Transport(id='{self.id}', capacity='{self.capacity}', dimensions='{self.dimensions}')>" 
+        return f"<Transport(id='{self.id}', capacity='{self.capacity}', dimensions='{self.dimensions}')>"
