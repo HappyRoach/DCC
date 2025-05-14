@@ -14,7 +14,7 @@ class DeliveryStatus(str, enum.Enum):
 class Delivery(Base):
     __tablename__ = 'deliveries'
 
-    id = Column(Integer, Identity(start=0, increment=1), primary_key=True)
+    id = Column(Integer, primary_key=True)
     user_delivery_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     weight = Column(Integer, nullable=False)  # Weight in kilograms
     status = Column(Enum(DeliveryStatus), nullable=False, default=DeliveryStatus.PENDING)

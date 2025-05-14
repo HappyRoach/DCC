@@ -10,7 +10,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, Identity(start=0, increment=1), primary_key=True)
+    id = Column(Integer, primary_key=True)
     login = Column(String(100), unique=True, nullable=False)
     password = Column(String)
     name = Column(String(100), nullable=True)

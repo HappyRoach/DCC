@@ -7,7 +7,7 @@ from .. import Base
 class Transport(Base):
     __tablename__ = 'transports'
 
-    id = Column(Integer, Identity(start=0, increment=1), primary_key=True)
+    id = Column(Integer, primary_key=True)
     capacity = Column(Integer, nullable=False)  # Capacity in kilograms
     dimensions = Column(String, nullable=False)  # Capacity by dimensions
 
