@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from ..schemas import transport as schemas
 from database.schemas import transport as models
 
+__all__ = ["get_transport", "get_transports", "create_transport", "update_transport", "delete_transport"]
 
 def get_transport(db: Session, transport_id: int) -> Optional[models.Transport]:
     return db.query(models.Transport).filter(models.Transport.id == transport_id).first()
@@ -38,4 +39,4 @@ def delete_transport(db: Session, transport_id: int) -> Optional[models.Transpor
     if db_transport:
         db.delete(db_transport)
         db.commit()
-    return db_transport 
+    return db_transport
