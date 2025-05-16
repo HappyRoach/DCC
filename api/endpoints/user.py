@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from .. import crud
 from .. import security
-from ..schemas import auth
 from ..schemas.user import *
 from ..utils.database import get_db, Session
 from database.schemas.user import User
@@ -14,7 +13,7 @@ router = APIRouter()
 @router.post("/", response_model=UserCreate)
 def create_user(user: UserCreate, db: Session = Depends(get_db),
                 current_user: User = Depends(security.check_role(["superadmin", "admin"]))):
-    return crud.create_user(db=db, login=user.login, password=user.password, role_id=user.role_id)
+    return crud.create_user(db=db, login=user.login, password=user.password, role_id=user.role_id, name=user.name)
 
 @router.get("/", response_model=List[UserGet])
 def get_users(db: Session = Depends(get_db), 

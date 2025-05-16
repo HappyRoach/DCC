@@ -17,6 +17,7 @@ class User(Base):
     role_id = Column(Integer, ForeignKey('roles.id'), nullable=False)
 
     role = relationship("Role", back_populates="users")
+    deliveries = relationship("Delivery", back_populates="user")
 
     def __repr__(self):
         return f"<User(login='{self.login}', name='{self.name}', role='{self.role}', id='{self.id}'')>"

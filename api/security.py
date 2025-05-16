@@ -56,7 +56,7 @@ def get_current_user(token: str):
 
 def get_current_user_with_role(token: str, db: Session = Depends(get_db)):
     payload = verify_token(token)
-    user = db.query(User).filter(User.login == payload.get("sub")).first()
+    user = db.query(User).filter(User.id == payload.get("user_id")).first()
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
