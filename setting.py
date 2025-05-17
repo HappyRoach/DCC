@@ -1,6 +1,8 @@
-SECRET_KEY = 'UBSUTv81pST8sHpkiEzEqQWW0WjV+wkTj6DvVz1o/p4='  # openssl rand -base64 32
+import os
 
-DATABASE_URL = f"postgresql://postgres:vb12jol901@dcc-pg/postgres"
+SECRET_KEY = os.getenv('SECRET_KEY', 'UBSUTv81pST8sHpkiEzEqQWW0WjV+wkTj6DvVz1o/p4=')  # openssl rand -base64 32
 
-SUPERADMIN_LOGIN = 'ADMIN'
-SUPERADMIN_PASSWORD = 'ADMIN'
+DATABASE_URL = os.getenv('DATABASE_URL', "postgresql://postgres:vb12jol901@dcc-pg/postgres")
+
+SUPERADMIN_LOGIN = os.getenv('SUPERADMIN_LOGIN', 'ADMIN')
+SUPERADMIN_PASSWORD = os.getenv('SUPERADMIN_PASSWORD', 'ADMIN')
