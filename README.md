@@ -13,7 +13,7 @@ A FastAPI-based web application for data management and control.
 
 ## Prerequisites
 
-- Python 3.8+
+- Python 3.12+
 - PostgreSQL
 - Docker (optional)
 
@@ -50,6 +50,10 @@ alembic upgrade head
 ### Development Mode
 
 ```bash
+python init_db.py
+```
+
+```bash
 python main.py
 ```
 
@@ -67,19 +71,3 @@ docker-compose up --build
 Once the server is running, you can access the API documentation at:
 - Swagger UI: `http://localhost:9667/docs`
 - ReDoc: `http://localhost:9667/redoc`
-
-## Project Structure
-
-```
-DCC/
-├── alembic/           # Database migrations
-├── api/              # API routes and endpoints
-├── database/         # Database models and configurations
-├── .venv/            # Virtual environment
-├── alembic.ini       # Alembic configuration
-├── docker-compose.yml # Docker Compose configuration
-├── Dockerfile        # Docker configuration
-├── main.py           # Application entry point
-├── requirements.txt  # Project dependencies
-└── setting.py        # Application settings
-```
