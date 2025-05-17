@@ -2,6 +2,39 @@ services:
   backend:
     build:
       context: .
-    container_name: creatly_backend
+    container_name: dcc_backend
     ports:
       - 9667:9667
+    environment:
+      - DATABASE_URL=postgresql://postgres:vb12jol901@dcc-pg/postgres
+      - SECRET_KEY=UBSUTv81pST8sHpkiEzEqQWW0WjV+wkTj6DvVz1o/p4=
+    depends_on:
+      dcc-pg:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  dcc-pg:
+    image: postgres:17.4
+    container_name: creatly_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: vb12jol901
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
+
