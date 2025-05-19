@@ -6,7 +6,7 @@ services:
     ports:
       - 9667:9667
     environment:
-      - DATABASE_URL=postgresql://postgres:vb12jol901@dcc-pg/postgres
+      - DATABASE_URL=postgresql://postgres:vb12jol901@dcc-pg/postgres?client_encoding=UTF8
       - SECRET_KEY=UBSUTv81pST8sHpkiEzEqQWW0WjV+wkTj6DvVz1o/p4=
     depends_on:
       dcc-pg:

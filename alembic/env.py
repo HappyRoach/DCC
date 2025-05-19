@@ -23,7 +23,7 @@ if config.config_file_name is not None:
 target_metadata = database.Base.metadata
 
 # Get the database URL from environment variable
-config.set_main_option('sqlalchemy.url', os.getenv('DATABASE_URL', 'postgresql://postgres:vb12jol901@dcc-pg/postgres'))
+config.set_main_option('sqlalchemy.url', os.getenv('DATABASE_URL', 'postgresql://postgres:vb12jol901@localhost:5432/postgres?client_encoding=UTF8'))
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
