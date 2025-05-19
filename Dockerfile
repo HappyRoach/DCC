@@ -11,8 +11,8 @@ COPY --from=builder /usr/local/lib/python3.12/site-packages/ /usr/local/lib/pyth
 COPY . .
 
 RUN useradd -m appuser && chown -R appuser:appuser /app
+RUN chmod +x start.sh
 USER appuser
 
-CMD ["python3", "main.py"]
+CMD ["./start.sh"]
 EXPOSE 9667
-
