@@ -4,7 +4,7 @@ echo "Ожидание готовности базы данных..."
 sleep 10
 
 echo "Запуск миграций..."
-alembic upgrade head
+python3 -m alembic upgrade head
 if [ $? -ne 0 ]; then
     echo "Ошибка при выполнении миграций"
     exit 1
