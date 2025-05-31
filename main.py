@@ -3,7 +3,12 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+app = FastAPI(
+    title="Delivery Control Center API",
+    description="API для системы управления доставкой",
+    version="1.0.0",
+    openapi_version="3.0.2"
+)
 
 app.add_middleware(
     CORSMiddleware,
