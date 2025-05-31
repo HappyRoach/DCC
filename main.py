@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
-    title="Delivery Control Center API",
+    title="DCC",
     description="API для системы управления доставкой",
     version="1.0.0",
     openapi_version="3.0.2"
